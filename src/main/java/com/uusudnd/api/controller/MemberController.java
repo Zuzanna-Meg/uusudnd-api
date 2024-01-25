@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/member")
+@RequestMapping("/api/v1")
 public class MemberController {
 
     @Autowired
     MemberRepository memberRepository;
 
     // get all
-    @GetMapping
+    @GetMapping("/member")
     public ResponseEntity<List<Member>> getAllMembers() {
         List<Member> members = new ArrayList<>();
         memberRepository.findAll().forEach(members::add);
@@ -26,7 +26,7 @@ public class MemberController {
     }
 
     // create
-    @PostMapping
+    @PostMapping("/member")
     public ResponseEntity<Member> createMember(@RequestBody Member member) {
         Member newMember = new Member(member.getName(), member.getEmail(), member.isStudent(), member.getBcode());
         memberRepository.save(newMember);
