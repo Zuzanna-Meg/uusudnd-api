@@ -26,7 +26,7 @@ public class MemberController {
     }
 
     // create
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Member> createMember(@RequestBody Member member) {
         Member newMember = new Member(member.getName(), member.getEmail(), member.isStudent(), member.getBcode());
         memberRepository.save(newMember);
