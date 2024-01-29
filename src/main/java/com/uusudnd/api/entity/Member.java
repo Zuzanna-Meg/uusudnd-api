@@ -1,6 +1,11 @@
 package com.uusudnd.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "member")
@@ -8,7 +13,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long member_id;
 
     @Column(name = "name")
     private String name;
@@ -22,12 +27,13 @@ public class Member {
     @Column(name = "bcode")
     private String bcode;
 
+
     public Member() {
         super();
     }
 
-    public Long getId() {
-        return id;
+    public Long getMember_id() {
+        return member_id;
     }
 
     public String getName() {
@@ -62,9 +68,9 @@ public class Member {
         this.bcode = bcode;
     }
 
-    public Member(Long id, String name, String email, boolean student, String bcode) {
+    public Member(Long member_id, String name, String email, boolean student, String bcode) {
         super();
-        this.id = id;
+        this.member_id = member_id;
         this.name = name;
         this.email = email;
         this.student = student;
