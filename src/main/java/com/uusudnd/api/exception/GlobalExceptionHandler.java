@@ -17,4 +17,11 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(GameNotFound.class)
+    public ResponseEntity<ErrorMessage> gameNotFound(Exception e, WebRequest request){
+        ErrorMessage errors = new ErrorMessage(404, new Date(), e.getMessage(), "Game Not Found");
+
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
 }

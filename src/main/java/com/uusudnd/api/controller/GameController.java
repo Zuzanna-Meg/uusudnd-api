@@ -2,6 +2,7 @@ package com.uusudnd.api.controller;
 
 import com.uusudnd.api.entity.Game;
 import com.uusudnd.api.entity.Member;
+import com.uusudnd.api.exception.GameNotFound;
 import com.uusudnd.api.exception.MemberNotFound;
 import com.uusudnd.api.repository.GameRepository;
 import com.uusudnd.api.repository.MemberRepository;
@@ -34,13 +35,44 @@ public class GameController {
     // create
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        Optional<Member> memberData = memberRepository.findById(game.getDm().getMember_id());
-        if (memberData.isPresent()) {
-            Game newGame = new Game(game.getName(), game.getSystem(), game.getSlots(), game.getDescription(), game.getDm());
+        Optional<Member> dmData = memberRepository.findById(game.getDm().getMember_id());
+        for (Member player : game.getPlayers()) {
+            Optional<Member> playerData = memberRepository.findById(player.getMember_id());
+            if (playerData.isEmpty()) {
+                throw new MemberNotFound("Invalid Member Id");
+            }
+        }
+        if (dmData.isPresent()) {
+            Game newGame = new Game(game.getName(), game.getSystem(), game.getSlots(), game.getDescription(), game.getDm(), game.getPlayers());
             gameRepository.save(newGame);
             return new ResponseEntity<>(newGame, HttpStatus.CREATED);
         } else {
             throw new MemberNotFound("Invalid Member Id");
+        }
+    }
+
+    // get one
+    @GetMapping("/{id}")
+    public ResponseEntity<Game> getGameById (@PathVariable("id") Long id) {
+
+        Optional<Game> gameData = gameRepository.findById(id);
+        if (gameData.isPresent()) {
+            return new ResponseEntity<>(gameData.get(), HttpStatus.OK);
+        } else {
+            throw new GameNotFound("Invalid Game Id");
+        }
+    }
+
+    // delete one
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Game> deleteGame (@PathVariable("id") Long id) {
+
+        Optional<Game> gameData = gameRepository.findById(id);
+        if (gameData.isPresent()) {
+            gameRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            throw new GameNotFound("Invalid Game Id");
         }
     }
 }

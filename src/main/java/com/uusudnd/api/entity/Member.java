@@ -1,15 +1,14 @@
 package com.uusudnd.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "member")
-public class Member {
+public class Member implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +26,9 @@ public class Member {
     @Column(name = "bcode")
     private String bcode;
 
+    @ManyToMany(mappedBy = "players")
+    @Column(name = "games")
+    Set<Game> games;
 
     public Member() {
         super();
@@ -68,6 +70,10 @@ public class Member {
         this.bcode = bcode;
     }
 
+//    public Set<Game> getGames() {
+//        return games;
+//    }
+
     public Member(Long member_id, String name, String email, boolean student, String bcode) {
         super();
         this.member_id = member_id;
@@ -75,6 +81,7 @@ public class Member {
         this.email = email;
         this.student = student;
         this.bcode = bcode;
+        this.games = new HashSet<>();
     }
 
     public Member(String name, String email, boolean student, String bcode) {
@@ -83,5 +90,6 @@ public class Member {
         this.email = email;
         this.student = student;
         this.bcode = bcode;
+        this.games = new HashSet<>();
     }
 }

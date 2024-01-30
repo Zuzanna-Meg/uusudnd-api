@@ -2,12 +2,12 @@ package com.uusudnd.api.entity;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "game")
-public class Game {
+public class Game implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +28,9 @@ public class Game {
     @ManyToOne
     private Member dm;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(name = "game_member",
-//            joinColumns = { @JoinColumn(name = "game_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "member_id") })
-//    private Set<Member> players = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "game_member")
+    private Set<Member> players;
 
     public Long getGame_id() {
         return game_id;
@@ -82,33 +76,47 @@ public class Game {
         this.dm = dm;
     }
 
-    //    public Set<Member> getPlayers() {
-//        return players;
-//    }
-//
-//    public void setPlayers(Set<Member> players) {
-//        this.players = players;
-//    }
+    public Set<Member> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<Member> players) {
+        this.players = players;
+    }
 
     public Game() {
         super();
     }
 
-    public Game(Long game_id, String name, String system, int slots, String description, Member dm) {
+    public Game(Long game_id, String name, String system, int slots, String description, Member dm, Set<Member> players) {
         this.game_id = game_id;
         this.name = name;
         this.system = system;
         this.slots = slots;
         this.description = description;
         this.dm = dm;
+        this.players = players;
     }
 
-    public Game(String name, String system, int slots, String description, Member dm) {
+    public Game(String name, String system, int slots, String description, Member dm, Set<Member> players) {
         this.name = name;
         this.system = system;
         this.slots = slots;
         this.description = description;
         this.dm = dm;
+        this.players = players;
     }
 
+    @Override
+    public String toString() {
+        return "Game{" +
+                "game_id=" + game_id +
+                ", name='" + name + '\'' +
+                ", system='" + system + '\'' +
+                ", slots=" + slots +
+                ", description='" + description + '\'' +
+                ", dm=" + dm +
+                ", players=" + players +
+                '}';
+    }
 }
