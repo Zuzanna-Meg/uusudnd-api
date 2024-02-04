@@ -24,4 +24,11 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BudgetNotFound.class)
+    public ResponseEntity<ErrorMessage> budgetNotFound(Exception e, WebRequest request){
+        ErrorMessage errors = new ErrorMessage(404, new Date(), e.getMessage(), "Budget Not Found");
+
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
 }

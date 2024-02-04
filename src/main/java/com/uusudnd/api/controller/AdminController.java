@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     @GetMapping
-    public ResponseEntity<String> checkHealth() {
+    public ResponseEntity<String> checkStatus() {
         return new ResponseEntity<>("Status: online", HttpStatus.OK);
     }
 }
