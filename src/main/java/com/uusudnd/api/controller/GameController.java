@@ -75,4 +75,34 @@ public class GameController {
             throw new GameNotFound("Invalid Game Id");
         }
     }
+
+    // amend one
+    @PutMapping("/{id}")
+    public ResponseEntity<Game> updateGame(@PathVariable("id") Long id, @RequestBody Game newgame) {
+        Optional<Game> gamedata = gameRepository.findById(id);
+        Optional<Member> dmData = memberRepository.findById(newgame.getDm().getMember_id());
+        if (dmData.isEmpty()) {
+            throw new MemberNotFound("Invalid Member Id");
+        }
+        for (Member player : newgame.getPlayers()) {
+            Optional<Member> playerData = memberRepository.findById(player.getMember_id());
+            if (playerData.isEmpty()) {
+                throw new MemberNotFound("Invalid Member Id");
+            }
+        }
+        if (gamedata.isPresent()) {
+            Game game = gamedata.get();
+            game.setName(newgame.getName());
+            game.setDescription(newgame.getDescription());
+            game.setSystem(newgame.getSystem());
+            game.setSlots(newgame.getSlots());
+            game.setDescription(newgame.getDescription());
+            game.setDm(newgame.getDm());
+            game.setPlayers(newgame.getPlayers());
+            gameRepository.save(game);
+            return new ResponseEntity<>(game, HttpStatus.OK);
+        } else {
+            throw new GameNotFound("Invalid Game Id");
+        }
+    }
 }

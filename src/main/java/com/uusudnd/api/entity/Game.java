@@ -26,6 +26,7 @@ public class Game implements Serializable {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member dm;
 
     @ManyToMany
@@ -89,6 +90,7 @@ public class Game implements Serializable {
     }
 
     public Game(Long game_id, String name, String system, int slots, String description, Member dm, Set<Member> players) {
+        super();
         this.game_id = game_id;
         this.name = name;
         this.system = system;
@@ -99,12 +101,17 @@ public class Game implements Serializable {
     }
 
     public Game(String name, String system, int slots, String description, Member dm, Set<Member> players) {
+        super();
         this.name = name;
         this.system = system;
         this.slots = slots;
         this.description = description;
         this.dm = dm;
         this.players = players;
+    }
+
+    public GameSummary summary(){
+        return new GameSummary(this);
     }
 
     @Override

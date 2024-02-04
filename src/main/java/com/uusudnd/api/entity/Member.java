@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "member")
@@ -29,6 +30,9 @@ public class Member implements Serializable {
     @ManyToMany(mappedBy = "players")
     @Column(name = "games")
     Set<Game> games;
+
+    @OneToMany(mappedBy = "dm")
+    private Set<Game> gamesDm;
 
     public Member() {
         super();
@@ -70,9 +74,13 @@ public class Member implements Serializable {
         this.bcode = bcode;
     }
 
-//    public Set<Game> getGames() {
-//        return games;
-//    }
+    public Set<GameSummary> getGames(){
+        return this.games.stream().map(Game::summary).collect(Collectors.toSet());
+    }
+
+    public Set<GameSummary> getGamesDm(){
+        return this.gamesDm.stream().map(Game::summary).collect(Collectors.toSet());
+    }
 
     public Member(Long member_id, String name, String email, boolean student, String bcode) {
         super();
