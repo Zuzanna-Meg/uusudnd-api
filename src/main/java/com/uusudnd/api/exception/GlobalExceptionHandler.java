@@ -31,4 +31,11 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(EventNotFound.class)
+    public ResponseEntity<ErrorMessage> eventNotFound(Exception e, WebRequest request){
+        ErrorMessage errors = new ErrorMessage(404, new Date(), e.getMessage(), "Event Not Found");
+
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
 }
