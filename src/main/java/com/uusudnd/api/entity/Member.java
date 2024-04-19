@@ -79,7 +79,11 @@ public class Member implements Serializable {
     }
 
     public Set<GameSummary> getGamesDm(){
-        return this.gamesDm.stream().map(Game::summary).collect(Collectors.toSet());
+        if (this.gamesDm == null){
+            return null;
+        } else {
+            return this.gamesDm.stream().map(Game::summary).collect(Collectors.toSet());
+        }
     }
 
     public Member(Long member_id, String name, String email, boolean student, String bcode) {
