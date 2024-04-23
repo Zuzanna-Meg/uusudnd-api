@@ -22,8 +22,6 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        env:
-          AZURE_DB: ${{ secrets.AZURE_DB }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
